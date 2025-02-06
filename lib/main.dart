@@ -77,9 +77,12 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
               child: const Text('Fetch Weather'),  // Activity 2.b: Add a FlatButton or ElevatedButton labeled "Fetch Weather".
             ),
             const SizedBox(height: 16),
-             Text('City: '),   // Activity2.c: Add placeholder for diplaying weather data like: city.
-             Text('Temperature: '), // Tempeture.
-             Text('Condition: '), // Weather condition.
+             Text('City: $city'),   // Activity2.c: Add placeholder for diplaying weather data like: city.
+             // Activity 4: show the entered city name
+             Text('Temperature: $temperature'), // Tempeture.
+             // 4.2: Display the temperature
+             Text('Condition: $condition'), // Weather condition.
+             // 4.3: display the weather condition.
           ],
         ),
       ),
