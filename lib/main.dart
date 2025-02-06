@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
+
 
 void main() {
   runApp(const WeatherInfoApp());
 }
 
+
 class WeatherInfoApp extends StatelessWidget {
   const WeatherInfoApp({super.key});
+
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Weather Info App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
@@ -20,15 +25,34 @@ class WeatherInfoApp extends StatelessWidget {
   }
 }
 
+
 class WeatherHomePage extends StatefulWidget {
   const WeatherHomePage({super.key});
+
 
   @override
   State<WeatherHomePage> createState() => _WeatherHomePageState();
 }
 
+
 class _WeatherHomePageState extends State<WeatherHomePage> {
   final TextEditingController _cityController = TextEditingController();
+
+
+  String city = '';
+  String temperature = '';
+  String condition = '';
+
+
+  void _fetchWeather(){ // Create a function that simulates fetching weather data when the user clicks the
+// "Fetch Weather" button.
+    setState(() {
+      city = _cityController.text; // Takes the entered city name
+      temperature = '${15 + Random().nextInt(16)}°C'; // Generates a random temperature between 15 and 30 C.
+      condition = ['Sunny', 'Cloudy','Rainy'][Random().nextInt(3)]; // Randomly select the weather condition.
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,13 +73,13 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: _fetchWeather,
               child: const Text('Fetch Weather'),  // Activity 2.b: Add a FlatButton or ElevatedButton labeled "Fetch Weather".
             ),
             const SizedBox(height: 16),
-            const Text('City: '),   // Activity2.c: Add placeholder for diplaying weather data like: city.
-            const Text('Temperature: '), // Tempeture.
-            const Text('Condition: '), // Weather condition.
+             Text('City: '),   // Activity2.c: Add placeholder for diplaying weather data like: city.
+             Text('Temperature: '), // Tempeture.
+             Text('Condition: '), // Weather condition.
           ],
         ),
       ),
