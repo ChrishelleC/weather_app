@@ -42,14 +42,31 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   String city = '';
   String temperature = '';
   String condition = '';
+  List<Map<String, dynamic>> _forecast = [];
 
 
-  void _fetchWeather(){ // Create a function that simulates fetching weather data when the user clicks the
-// "Fetch Weather" button.
+  void _fetchWeather() {
+    // Create a function that simulates fetching weather data when the user clicks the "Fetch Weather" button.
     setState(() {
       city = _cityController.text; // Takes the entered city name
       temperature = '${15 + Random().nextInt(16)}°C'; // Generates a random temperature between 15 and 30 C.
-      condition = ['Sunny', 'Cloudy','Rainy'][Random().nextInt(3)]; // Randomly select the weather condition.
+      condition = ['Sunny', 'Cloudy', 'Rainy'][Random().nextInt(3)]; // Randomly select the weather condition.
+    });
+  }
+
+
+  void _fetch7DayForecast() {
+    // Create a function to simulate fetching weather data for a 7-day forecast.
+    setState(() {
+      _forecast = List.generate(7, (index) { // Generates a list of seven.
+        final randomTemp = '${15 + Random().nextInt(16)}°C';
+        final condition = ['Sunny', 'Cloudy', 'Rainy'][Random().nextInt(3)]; // Randomly select the weather condition.
+        return {
+          'day': 'Day ${index + 1}', // String interpolation for day labels.
+          'temperature': randomTemp, // Temperature
+          'condition': condition, // Condition
+        };
+      });
     });
   }
 
@@ -72,21 +89,49 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
               ),
             ),
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _fetchWeather,
-              child: const Text('Fetch Weather'),  // Activity 2.b: Add a FlatButton or ElevatedButton labeled "Fetch Weather".
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: _fetchWeather,
+                  child: const Text('Fetch Weather'), // Activity 2.b: Add a FlatButton or ElevatedButton labeled "Fetch Weather".
+                ),
+                ElevatedButton(
+                  onPressed: _fetch7DayForecast,
+                  child: const Text('7-Day Forecast'), // Activity 5: Add a button to retrieve a 7-day weather forecast.
+                ),
+              ],
             ),
             const SizedBox(height: 16),
-             Text('City: $city'),   // Activity2.c: Add placeholder for diplaying weather data like: city.
-             // Activity 4: show the entered city name
-             Text('Temperature: $temperature'), // Tempeture.
-             // 4.2: Display the temperature
-             Text('Condition: $condition'), // Weather condition.
-             // 4.3: display the weather condition.
+            Text('City: $city'), // Activity 2.c: Add placeholder for displaying weather data like city.
+            // Activity 4: Show the entered city name
+            Text('Temperature: $temperature'), // Temperature.
+            // 4.2: Display the temperature
+            Text('Condition: $condition'), // Weather condition.
+            // 4.3: Display the weather condition.
+            const SizedBox(height: 16),
+            if (_forecast.isNotEmpty) ...[
+              const Text(
+                '7-Day Forecast:',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              ..._forecast.map((dayForecast) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(dayForecast['day']), // Display day
+                      Text('${dayForecast['temperature']} - ${dayForecast['condition']}'), // Display Temperature and condidtion.
+                    ],
+                  ),
+                );
+              }).toList(),
+            ],
           ],
         ),
       ),
     );
   }
 }
-// Program works as expected
